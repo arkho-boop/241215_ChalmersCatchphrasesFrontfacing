@@ -822,6 +822,7 @@
             heading = svg.append('text')
                 .attr('text-anchor', 'middle')
                 .attr('y', margin.top-15)
+                .style('overflow-wrap', 'break-word')
                 .text("Share of Jim Chalmers' economics-related paragraphs that contains catchphrase");
 
             ///////////////////
@@ -987,6 +988,7 @@
                 xAxis.call(d3.axisBottom(x).ticks(5));
                 xAxisLabel.attr('x', width/2);
                 heading.attr('x', currentWidth/2);
+                heading.style('overflow-wrap', 'break-word');
                 legend_holder.attr('x', currentWidth);
 
                 // Update the x values of area
