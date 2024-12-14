@@ -22,9 +22,18 @@
             var svg = d3.select("#viz")
                 .append("svg")
                     .attr("height", height + margin.top + margin.bottom + legend_box_dimensions.height)
+
+            var clearclick = function(d) {
+                // reduce opacity of everything else 
+                d3.selectAll(".myArea").attr('opacity', 0.6);
+                d3.selectAll(".myBar").style('display', 'none');
+                d3.selectAll(".myLeg").attr('opacity', 0.8);
+            };
+            
             var grob = svg
                 .append("g")
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                    .on('mouseover', clearclick);
 
             ///////////////////
             /// ON HOVER //////
