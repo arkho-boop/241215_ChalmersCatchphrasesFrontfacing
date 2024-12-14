@@ -904,10 +904,12 @@
             ///////////////////     
 
             var clear = grob
-                .append('g')
+                .append('rect')
                     .attr('opacity', 0)
                     .on('mouseover', clearclick)
                     .attr('height', height)
+                    .attr('x', 0)
+                    .attr('y', 0);
             
             var stackedArea = grob
                 .selectAll("mylayers")
