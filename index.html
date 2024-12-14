@@ -32,8 +32,7 @@
             
             var grob = svg
                 .append("g")
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-                    .on('mouseover', clearclick);
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
             ///////////////////
             /// ON HOVER //////
@@ -902,6 +901,12 @@
             ///////////////////
             /// STACKED BAR ///
             ///////////////////     
+
+            var clear = grob
+                .append('g')
+                    .attr('opacity', 0)
+                    .on('mouseover', clearclick)
+                    .attr('height', height)
             
             var stackedArea = grob
                 .selectAll("mylayers")
@@ -999,6 +1004,7 @@
                 heading.attr('x', currentWidth/2);
                 heading.style('overflow-wrap', 'break-word');
                 legend_holder.attr('x', currentWidth);
+                clear.attr('width', width)
 
                 // Update the x values of area
                 stackedArea
