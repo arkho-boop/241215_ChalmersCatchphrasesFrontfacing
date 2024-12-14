@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://d3js.org/d3.v4.js"></script>
+        <style>
+            body, html {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            };
+        </style>
+    </head>
+    <body>
+        <div id="viz", style="max-width: 700px;">
+        </div>
+        <script>
+            const margin = { top: 40, right: 30, bottom: 60, left: 30 };
+            const legend_box_dimensions = { height: 50 };
+            const height = 450 - margin.top - margin.bottom - legend_box_dimensions.height;
+
+            var svg = d3.select("#viz")
+                .append("svg")
+                    .attr("height", height + margin.top + margin.bottom + legend_box_dimensions.height)
+            var grob = svg
+                .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            ///////////////////
+            /// ON HOVER //////
+            ///////////////////
+
+            var hoverArea = function(d) {
+                // reduce opacity of everything else 
+                d3.selectAll(".myArea").attr('opacity', 0.1);
+                // except the one that's hovered
+                d3.select('.' + d.key.replace(',', '')+'Area').attr('opacity', 0.5);
+                d3.selectAll('.' + d.key.replace(',', '')+'Bar').style('display', 'block');
+                d3.selectAll(".myLeg").attr('opacity', 0.1);
+                d3.select('.' + d.key.replace(',', '')+'Leg').attr('opacity', 1);
+            };
+            
+            // And when it is not hovered anymore
+            var noHoverArea = function(d){
+                d3.selectAll(".myArea").attr("opacity", 0.6);
+                d3.selectAll(".myBar").style('display', 'none');
+                d3.selectAll(".myLeg").attr('opacity', 0.8);
+            };
+
+            ///////////////////
+            /// CANVAS ////////
+            ///////////////////
+            
+            var data = [
+                {
+                    "year_month": "2022-05-01",
+                    "hit_value": 0,
+                    "set": "edg,take",
+                    "total": 128,
+                    "per_par": 0
+                },
+                {
+                    "year_month": "2022-06-01",
+                    "hit_value": 1,
+                    "set": "edg,take",
+                    "total": 210,
+                    "per_par": 0.0048
+                },
+                {
+                    "year_month": "2022-07-01",
+                    "hit_value": 0,
+                    "set": "edg,take",
+                    "total": 384,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0.001
+                },
+                {
+                    "year_month": "2022-08-01",
+                    "hit_value": 0,
+                    "set": "edg,take",
+                    "total": 112,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0.001
+                },
+                {
+                    "year_month": "2022-09-01",
+                    "hit_value": 0,
+                    "set": "edg,take",
+                    "total": 210,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0
+                },
+                {
+                    "year_month": "2022-10-01",
+                    "hit_value": 0,
+                    "set": "edg,take",
+                    "total": 457,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0.0095
+                },
+                {
+                    "year_month": "2022-11-01",
+                    "hit_value": 0,
+                    "set": "edg,take",
+                    "total": 67,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0.0187
+                },
+                {
+                    "year_month": "2022-12-01",
+                    "hit_value": 5,
+                    "set": "edg,take",
+                    "total": 105,
+                    "per_par": 0.0476,
+                    "rolling_avg_per_par": 0.023
+                },
+                {
+                    "year_month": "2023-01-01",
+                    "hit_value": 10,
+                    "set": "edg,take",
+                    "total": 217,
+                    "per_par": 0.0461,
+                    "rolling_avg_per_par": 0.03
+                },
+                {
+                    "year_month": "2023-02-01",
+                    "hit_value": 4,
+                    "set": "edg,take",
+                    "total": 186,
+                    "per_par": 0.0215,
+                    "rolling_avg_per_par": 0.0362
+                },
+                {
+                    "year_month": "2023-03-01",
+                    "hit_value": 4,
+                    "set": "edg,take",
+                    "total": 115,
+                    "per_par": 0.0348,
+                    "rolling_avg_per_par": 0.0423
+                },
+                {
+                    "year_month": "2023-04-01",
+                    "hit_value": 5,
+                    "set": "edg,take",
+                    "total": 161,
+                    "per_par": 0.0311,
+                    "rolling_avg_per_par": 0.0645
+                },
+                {
+                    "year_month": "2023-05-01",
+                    "hit_value": 29,
+                    "set": "edg,take",
+                    "total": 372,
+                    "per_par": 0.078,
+                    "rolling_avg_per_par": 0.0852
+                },
+                {
+                    "year_month": "2023-06-01",
+                    "hit_value": 19,
+                    "set": "edg,take",
+                    "total": 121,
+                    "per_par": 0.157,
+                    "rolling_avg_per_par": 0.0954
+                },
+                {
+                    "year_month": "2023-07-01",
+                    "hit_value": 22,
+                    "set": "edg,take",
+                    "total": 176,
+                    "per_par": 0.125,
+                    "rolling_avg_per_par": 0.1078
+                },
+                {
+                    "year_month": "2023-08-01",
+                    "hit_value": 15,
+                    "set": "edg,take",
+                    "total": 175,
+                    "per_par": 0.0857,
+                    "rolling_avg_per_par": 0.1166
+                },
+                {
+                    "year_month": "2023-09-01",
+                    "hit_value": 15,
+                    "set": "edg,take",
+                    "total": 161,
+                    "per_par": 0.0932,
+                    "rolling_avg_per_par": 0.1268
+                },
+                {
+                    "year_month": "2023-10-01",
+                    "hit_value": 5,
+                    "set": "edg,take",
+                    "total": 41,
+                    "per_par": 0.122,
+                    "rolling_avg_per_par": 0.1134
+                },
+                {
+                    "year_month": "2023-11-01",
+                    "hit_value": 15,
+                    "set": "edg,take",
+                    "total": 72,
+                    "per_par": 0.2083,
+                    "rolling_avg_per_par": 0.1069
+                },
+                {
+                    "year_month": "2023-12-01",
+                    "hit_value": 9,
+                    "set": "edg,take",
+                    "total": 156,
+                    "per_par": 0.0577,
+                    "rolling_avg_per_par": 0.0897
+                },
+                {
+                    "year_month": "2024-01-01",
+                    "hit_value": 9,
+                    "set": "edg,take",
+                    "total": 169,
+                    "per_par": 0.0533,
+                    "rolling_avg_per_par": 0.0709
+                },
+                {
+                    "year_month": "2024-02-01",
+                    "hit_value": 1,
+                    "set": "edg,take",
+                    "total": 142,
+                    "per_par": 0.007,
+                    "rolling_avg_per_par": 0.0382
+                },
+                {
+                    "year_month": "2024-03-01",
+                    "hit_value": 4,
+                    "set": "edg,take",
+                    "total": 143,
+                    "per_par": 0.028,
+                    "rolling_avg_per_par": 0.0354
+                },
+                {
+                    "year_month": "2024-04-01",
+                    "hit_value": 8,
+                    "set": "edg,take",
+                    "total": 178,
+                    "per_par": 0.0449,
+                    "rolling_avg_per_par": 0.0355
+                },
+                {
+                    "year_month": "2024-05-01",
+                    "hit_value": 21,
+                    "set": "edg,take",
+                    "total": 477,
+                    "per_par": 0.044,
+                    "rolling_avg_per_par": 0.0414
+                },
+                {
+                    "year_month": "2024-06-01",
+                    "hit_value": 13,
+                    "set": "edg,take",
+                    "total": 244,
+                    "per_par": 0.0533,
+                    "rolling_avg_per_par": 0.0401
+                },
+                {
+                    "year_month": "2024-07-01",
+                    "hit_value": 8,
+                    "set": "edg,take",
+                    "total": 218,
+                    "per_par": 0.0367,
+                    "rolling_avg_per_par": 0.0317
+                },
+                {
+                    "year_month": "2024-08-01",
+                    "hit_value": 5,
+                    "set": "edg,take",
+                    "total": 231,
+                    "per_par": 0.0216,
+                    "rolling_avg_per_par": 0.0246
+                },
+                {
+                    "year_month": "2024-09-01",
+                    "hit_value": 1,
+                    "set": "edg,take",
+                    "total": 336,
+                    "per_par": 0.003,
+                    "rolling_avg_per_par": 0.0151
+                },
+                {
+                    "year_month": "2024-10-01",
+                    "hit_value": 2,
+                    "set": "edg,take",
+                    "total": 236,
+                    "per_par": 0.0085,
+                    "rolling_avg_per_par": 0.0078
+                },
+                {
+                    "year_month": "2024-11-01",
+                    "hit_value": 1,
+                    "set": "edg,take",
+                    "total": 175,
+                    "per_par": 0.0057
+                },
+                {
+                    "year_month": "2024-12-01",
+                    "hit_value": 0,
+                    "set": "edg,take",
+                    "total": 152,
+                    "per_par": 0
+                },
+                {
+                    "year_month": "2022-05-01",
+                    "hit_value": 0,
+                    "set": "take,sting",
+                    "total": 128,
+                    "per_par": 0
+                },
+                {
+                    "year_month": "2022-06-01",
+                    "hit_value": 1,
+                    "set": "take,sting",
+                    "total": 210,
+                    "per_par": 0.0048
+                },
+                {
+                    "year_month": "2022-07-01",
+                    "hit_value": 6,
+                    "set": "take,sting",
+                    "total": 384,
+                    "per_par": 0.0156,
+                    "rolling_avg_per_par": 0.005
+                },
+                {
+                    "year_month": "2022-08-01",
+                    "hit_value": 0,
+                    "set": "take,sting",
+                    "total": 112,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0.0077
+                },
+                {
+                    "year_month": "2022-09-01",
+                    "hit_value": 1,
+                    "set": "take,sting",
+                    "total": 210,
+                    "per_par": 0.0048,
+                    "rolling_avg_per_par": 0.0366
+                },
+                {
+                    "year_month": "2022-10-01",
+                    "hit_value": 6,
+                    "set": "take,sting",
+                    "total": 457,
+                    "per_par": 0.0131,
+                    "rolling_avg_per_par": 0.0791
+                },
+                {
+                    "year_month": "2022-11-01",
+                    "hit_value": 10,
+                    "set": "take,sting",
+                    "total": 67,
+                    "per_par": 0.1493,
+                    "rolling_avg_per_par": 0.0893
+                },
+                {
+                    "year_month": "2022-12-01",
+                    "hit_value": 24,
+                    "set": "take,sting",
+                    "total": 105,
+                    "per_par": 0.2286,
+                    "rolling_avg_per_par": 0.1012
+                },
+                {
+                    "year_month": "2023-01-01",
+                    "hit_value": 11,
+                    "set": "take,sting",
+                    "total": 217,
+                    "per_par": 0.0507,
+                    "rolling_avg_per_par": 0.0986
+                },
+                {
+                    "year_month": "2023-02-01",
+                    "hit_value": 12,
+                    "set": "take,sting",
+                    "total": 186,
+                    "per_par": 0.0645,
+                    "rolling_avg_per_par": 0.0725
+                },
+                {
+                    "year_month": "2023-03-01",
+                    "hit_value": 0,
+                    "set": "take,sting",
+                    "total": 115,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0.0359
+                },
+                {
+                    "year_month": "2023-04-01",
+                    "hit_value": 3,
+                    "set": "take,sting",
+                    "total": 161,
+                    "per_par": 0.0186,
+                    "rolling_avg_per_par": 0.0291
+                },
+                {
+                    "year_month": "2023-05-01",
+                    "hit_value": 17,
+                    "set": "take,sting",
+                    "total": 372,
+                    "per_par": 0.0457,
+                    "rolling_avg_per_par": 0.0196
+                },
+                {
+                    "year_month": "2023-06-01",
+                    "hit_value": 2,
+                    "set": "take,sting",
+                    "total": 121,
+                    "per_par": 0.0165,
+                    "rolling_avg_per_par": 0.0196
+                },
+                {
+                    "year_month": "2023-07-01",
+                    "hit_value": 3,
+                    "set": "take,sting",
+                    "total": 176,
+                    "per_par": 0.017,
+                    "rolling_avg_per_par": 0.0171
+                },
+                {
+                    "year_month": "2023-08-01",
+                    "hit_value": 0,
+                    "set": "take,sting",
+                    "total": 175,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0.0323
+                },
+                {
+                    "year_month": "2023-09-01",
+                    "hit_value": 1,
+                    "set": "take,sting",
+                    "total": 161,
+                    "per_par": 0.0062,
+                    "rolling_avg_per_par": 0.0346
+                },
+                {
+                    "year_month": "2023-10-01",
+                    "hit_value": 5,
+                    "set": "take,sting",
+                    "total": 41,
+                    "per_par": 0.122,
+                    "rolling_avg_per_par": 0.0325
+                },
+                {
+                    "year_month": "2023-11-01",
+                    "hit_value": 2,
+                    "set": "take,sting",
+                    "total": 72,
+                    "per_par": 0.0278,
+                    "rolling_avg_per_par": 0.036
+                },
+                {
+                    "year_month": "2023-12-01",
+                    "hit_value": 1,
+                    "set": "take,sting",
+                    "total": 156,
+                    "per_par": 0.0064,
+                    "rolling_avg_per_par": 0.0362
+                },
+                {
+                    "year_month": "2024-01-01",
+                    "hit_value": 3,
+                    "set": "take,sting",
+                    "total": 169,
+                    "per_par": 0.0178,
+                    "rolling_avg_per_par": 0.0132
+                },
+                {
+                    "year_month": "2024-02-01",
+                    "hit_value": 1,
+                    "set": "take,sting",
+                    "total": 142,
+                    "per_par": 0.007,
+                    "rolling_avg_per_par": 0.0088
+                },
+                {
+                    "year_month": "2024-03-01",
+                    "hit_value": 1,
+                    "set": "take,sting",
+                    "total": 143,
+                    "per_par": 0.007,
+                    "rolling_avg_per_par": 0.01
+                },
+                {
+                    "year_month": "2024-04-01",
+                    "hit_value": 1,
+                    "set": "take,sting",
+                    "total": 178,
+                    "per_par": 0.0056,
+                    "rolling_avg_per_par": 0.0064
+                },
+                {
+                    "year_month": "2024-05-01",
+                    "hit_value": 6,
+                    "set": "take,sting",
+                    "total": 477,
+                    "per_par": 0.0126,
+                    "rolling_avg_per_par": 0.0087
+                },
+                {
+                    "year_month": "2024-06-01",
+                    "hit_value": 0,
+                    "set": "take,sting",
+                    "total": 244,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0.0082
+                },
+                {
+                    "year_month": "2024-07-01",
+                    "hit_value": 4,
+                    "set": "take,sting",
+                    "total": 218,
+                    "per_par": 0.0183,
+                    "rolling_avg_per_par": 0.0071
+                },
+                {
+                    "year_month": "2024-08-01",
+                    "hit_value": 1,
+                    "set": "take,sting",
+                    "total": 231,
+                    "per_par": 0.0043,
+                    "rolling_avg_per_par": 0.0045
+                },
+                {
+                    "year_month": "2024-09-01",
+                    "hit_value": 0,
+                    "set": "take,sting",
+                    "total": 336,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0.0057
+                },
+                {
+                    "year_month": "2024-10-01",
+                    "hit_value": 0,
+                    "set": "take,sting",
+                    "total": 236,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0.0046
+                },
+                {
+                    "year_month": "2024-11-01",
+                    "hit_value": 1,
+                    "set": "take,sting",
+                    "total": 175,
+                    "per_par": 0.0057
+                },
+                {
+                    "year_month": "2024-12-01",
+                    "hit_value": 2,
+                    "set": "take,sting",
+                    "total": 152,
+                    "per_par": 0.0132
+                },
+                {
+                    "year_month": "2022-05-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 128,
+                    "per_par": 0
+                },
+                {
+                    "year_month": "2022-06-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 210,
+                    "per_par": 0
+                },
+                {
+                    "year_month": "2022-07-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 384,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0
+                },
+                {
+                    "year_month": "2022-08-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 112,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0
+                },
+                {
+                    "year_month": "2022-09-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 210,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0
+                },
+                {
+                    "year_month": "2022-10-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 457,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0
+                },
+                {
+                    "year_month": "2022-11-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 67,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0
+                },
+                {
+                    "year_month": "2022-12-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 105,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0
+                },
+                {
+                    "year_month": "2023-01-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 217,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0
+                },
+                {
+                    "year_month": "2023-02-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 186,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0
+                },
+                {
+                    "year_month": "2023-03-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 115,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0
+                },
+                {
+                    "year_month": "2023-04-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 161,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0
+                },
+                {
+                    "year_month": "2023-05-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 372,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0
+                },
+                {
+                    "year_month": "2023-06-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 121,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0
+                },
+                {
+                    "year_month": "2023-07-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 176,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0
+                },
+                {
+                    "year_month": "2023-08-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 175,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0
+                },
+                {
+                    "year_month": "2023-09-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 161,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0
+                },
+                {
+                    "year_month": "2023-10-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 41,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0
+                },
+                {
+                    "year_month": "2023-11-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 72,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0
+                },
+                {
+                    "year_month": "2023-12-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 156,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0
+                },
+                {
+                    "year_month": "2024-01-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 169,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0
+                },
+                {
+                    "year_month": "2024-02-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 142,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0
+                },
+                {
+                    "year_month": "2024-03-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 143,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0.0021
+                },
+                {
+                    "year_month": "2024-04-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 178,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0.0234
+                },
+                {
+                    "year_month": "2024-05-01",
+                    "hit_value": 5,
+                    "set": "smash,without",
+                    "total": 477,
+                    "per_par": 0.0105,
+                    "rolling_avg_per_par": 0.0307
+                },
+                {
+                    "year_month": "2024-06-01",
+                    "hit_value": 26,
+                    "set": "smash,without",
+                    "total": 244,
+                    "per_par": 0.1066,
+                    "rolling_avg_per_par": 0.0359
+                },
+                {
+                    "year_month": "2024-07-01",
+                    "hit_value": 8,
+                    "set": "smash,without",
+                    "total": 218,
+                    "per_par": 0.0367,
+                    "rolling_avg_per_par": 0.0383
+                },
+                {
+                    "year_month": "2024-08-01",
+                    "hit_value": 6,
+                    "set": "smash,without",
+                    "total": 231,
+                    "per_par": 0.026,
+                    "rolling_avg_per_par": 0.0362
+                },
+                {
+                    "year_month": "2024-09-01",
+                    "hit_value": 4,
+                    "set": "smash,without",
+                    "total": 336,
+                    "per_par": 0.0119,
+                    "rolling_avg_per_par": 0.0149
+                },
+                {
+                    "year_month": "2024-10-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 236,
+                    "per_par": 0,
+                    "rolling_avg_per_par": 0.0076
+                },
+                {
+                    "year_month": "2024-11-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 175,
+                    "per_par": 0
+                },
+                {
+                    "year_month": "2024-12-01",
+                    "hit_value": 0,
+                    "set": "smash,without",
+                    "total": 152,
+                    "per_par": 0
+                }
+            ]
+
+            // Axis label
+
+            xAxisLabel = grob.append('text')
+                .attr('text-anchor', 'middle')
+                .attr('y', height + 40)
+                .text('Date');
+
+            // Heading
+
+            heading = svg.append('text')
+                .attr('text-anchor', 'middle')
+                .attr('y', margin.top-15)
+                .text("Share of Jim Chalmers' economics-related paragraphs that contains catchphrase");
+
+            ///////////////////
+            /// STACKED AREA //
+            ///////////////////
+
+            var parsedData = data.map(function(d) {
+                return {
+                    date: d3.timeParse("%Y-%m-%d")(d.year_month),
+                    set: d.set,
+                    per_par: d.per_par,
+                    rolling_avg: d.rolling_avg_per_par
+                }
+            });
+
+            var x = d3.scaleTime()
+                .domain([ new Date(2022, 1, 1), new Date (2025, 1, 1)]); 
+
+            var keys = [ "take,sting", "edg,take", "smash,without" ];
+
+            var pivotedData = d3.nest()
+                .key(function(d) { return d.date; })
+                .rollup(function(values) {
+                    var row = { date: values[0].date };
+                    keys.forEach(function(key) {
+                        row[key] = values.some(v => v.set === key && v.rolling_avg !== undefined) 
+                            ? d3.sum(values, v => (v.set === key ? v.rolling_avg : 0))
+                            : NaN;
+                    });
+                    return row;
+                })
+                .entries(parsedData)
+                .map(d => d.value);
+
+            var stackedData = d3.stack()
+                .keys(keys)
+                (pivotedData);
+            
+            var pivotedDataBar = d3.nest()
+            .key(function(d) { return d.date; })
+            .rollup(function(values) {
+                var row = { date: values[0].date };
+                keys.forEach(function(key) {
+                    row[key] = values.some(v => v.set === key && v.per_par !== undefined) 
+                        ? d3.sum(values, v => (v.set === key ? v.per_par : 0))
+                        : NaN;
+                });
+                return row;
+            })
+            .entries(parsedData)
+            .map(d => d.value);
+
+            var stackedDataBar = d3.stack()
+                .keys(keys)
+                (pivotedDataBar);
+
+            var maxY = 0.3;
+            
+            var y = d3.scaleLinear()
+                .domain([0, maxY])
+                .range([height, 0]);
+            
+
+            var color = d3.scaleOrdinal()
+                .domain(keys)
+                .range(['#e41a1c', '#377eb8', '#4daf4a']);
+
+            ///////////////////
+            /// STACKED BAR ///
+            ///////////////////     
+            
+            var stackedArea = grob
+                .selectAll("mylayers")
+                .data(stackedData)
+                .enter()
+                .append("path")
+                .style("fill", (d, i) => color(keys[i]))
+                .attr("d", d3.area()
+                    .defined(d => !isNaN(d[0]) && !isNaN(d[1]))
+                    .x(d => x(d.data.date))
+                    .y0(d => y(d[0]))
+                    .y1(d => y(d[1]))
+                )
+                .attr('opacity', 0.6)
+                .attr('class', function(d) { return "myArea " + d.key.replace(',', '') + 'Area' });
+
+            var stackedBar = grob
+                .selectAll('bars')
+                .data(stackedDataBar)
+                .enter()
+                .append('g')
+                    .attr('fill', (d, i) => color(keys[i]))
+                    .attr('class', function(d) { return "myBar " + d.key.replace(',', '') + 'Bar' })
+                    .style('display', 'none')
+                    .selectAll('rect')
+                    .data(d => d)
+                    .enter()
+                    .append('rect')
+                        .attr('y', d => y(d[1]))
+                        .attr('opacity', 0.6)
+                        .attr('height', d => {return y(d[0])-y(d[1])})
+                        .attr('stroke', 'yellow')
+                        .attr('stroke-width', 2);
+
+            var stackedAreaTransparent = grob
+                .selectAll("newlayers")
+                .data(stackedData)
+                .enter()
+                .append("path")
+                .style("fill", (d, i) => color(keys[i]))
+                .attr("d", d3.area()
+                    .defined(d => !isNaN(d[0]) && !isNaN(d[1]))
+                    .x(d => x(d.data.date))
+                    .y0(d => y(d[0]))
+                    .y1(d => y(d[1]))
+                )
+                .attr('opacity', 0)
+                .on('mouseover', hoverArea)
+                .on('mouseleave', noHoverArea);
+
+
+            ///////////////////
+            /// LEGEND ////////
+            ///////////////////
+
+            var legend_expanded = d3.scaleOrdinal()
+                .domain(keys)
+                .range(["● 'Take the sting' out of inflation", "● 'Take the edge off' inflation", "● 'Smash' inflation"]);
+
+            var legend_holder = svg.append('g')
+                .attr('transform', 'translate(0,' + (height + margin.top + margin.bottom) + ')')
+                .attr('class', 'legend_holder');
+            
+            var legend_elems = legend_holder
+                .selectAll('elems')
+                .data(keys)
+                .enter()
+                .append('text')
+                    .attr('y', 0)
+                    .attr('text-anchor', 'middle')
+                    .attr('opacity', 0.8)
+                    .text((d, i) => legend_expanded(keys[i]))
+                    .attr('class', function(d){ return 'myLeg ' + d.replace(',', '') + 'Leg' })
+                    .style("fill", (d, i) => color(keys[i]))
+                    .style('font-size', '0.8em');
+
+            var xAxis = grob.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x)
+                    .ticks(d3.timeMonth.every(6))
+                );
+            
+            // Draw and resize
+            function drawChart() {
+                // get the current width of the div where the chart appear, and attribute it to Svg
+                var currentWidth = parseInt(d3.select('#viz').style('width'), 10);
+                var width = currentWidth - margin.left - margin.right
+                svg.attr("width", currentWidth);
+
+                // Update the X scale, axis, label, heading, legend
+                x.range([ 0, width ]);
+                xAxis.call(d3.axisBottom(x).ticks(5));
+                xAxisLabel.attr('x', width/2);
+                heading.attr('x', currentWidth/2);
+                legend_holder.attr('x', currentWidth);
+                legend_elems.attr('x', (d, i) => (currentWidth / (keys.length + 1)) * (i + 1));
+
+                // Update the x values of area
+                stackedArea
+                    .attr("d", d3.area()
+                        .defined(d => !isNaN(d[0]) && !isNaN(d[1]))
+                        .x(d => x(d.data.date))
+                        .y0(d => y(d[0]))
+                        .y1(d => y(d[1]))
+                    );
+
+                // Update the x values of stacked bars
+                stackedBar
+                    .attr('x', d => x(d.data.date))
+                    .attr('transform', 'translate(-' + (width/36 - 4)/2 + ',0)')
+                    .attr('width', (width/36 - 4))
+
+                // Update the x values of area
+                stackedAreaTransparent
+                    .attr("d", d3.area()
+                        .defined(d => !isNaN(d[0]) && !isNaN(d[1]))
+                        .x(d => x(d.data.date))
+                        .y0(d => y(d[0]))
+                        .y1(d => y(d[1]))
+                    );
+            };
+
+            drawChart();
+
+            window.addEventListener('resize', drawChart );
+    </script>
+    </body>
+</html>
