@@ -48,6 +48,7 @@
                 d3.selectAll(".myArea").attr('opacity', 0.1);
                 // except the one that's hovered
                 d3.select('.' + d.key.replace(',', '')+'Area').attr('opacity', 0.5);
+                d3.selectAll(".myBar").style('display', 'none');
                 d3.selectAll('.' + d.key.replace(',', '')+'Bar').style('display', 'block');
                 d3.selectAll(".myLeg").attr('opacity', 0.1);
                 d3.select('.' + d.key.replace(',', '')+'Leg').attr('opacity', 1);
