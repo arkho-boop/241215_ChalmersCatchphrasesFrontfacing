@@ -29,8 +29,8 @@
                 d3.selectAll(".myArea").attr('opacity', 0.6);
                 d3.selectAll(".myBar").style('display', 'none');
                 d3.selectAll(".myLeg").attr('opacity', 0.8);
-                d3.select('.stingcard').attr('display', 'none');
-                d3.select('.stingtextgroup')
+                d3.selectAll('.Card').attr('display', 'none');
+                d3.selectAll('.Card')
                     .interrupt() // Interrupt the current transition
                     .attr('transform', 'translate(0, 0)'); 
             };
@@ -51,12 +51,14 @@
                 d3.selectAll('.' + d.key.replace(',', '')+'Bar').style('display', 'block');
                 d3.selectAll(".myLeg").attr('opacity', 0.1);
                 d3.select('.' + d.key.replace(',', '')+'Leg').attr('opacity', 1);
-                d3.select('.stingcard').attr('display', 'block');
-                d3.select('.stingtextgroup')
+                d3.selectAll('.Card').attr('display', 'none');
+                d3.select('.' + d.key.replace(',', '')+'Card').attr('display', 'block');
+                d3.select('.' + d.key.replace(',', '')+'Card').select('g')
+                    .interrupt()
                     .transition()
-                    .duration(10000)
+                    .duration(100000)
                     .ease(d3.easeLinear)
-                    .attr("transform", "translate(0, -150)");
+                    .attr("transform", "translate(-9000, 0)");
             };
             
             // And when it is not hovered anymore
@@ -64,8 +66,8 @@
                 d3.selectAll(".myArea").attr("opacity", 0.6);
                 d3.selectAll(".myBar").style('display', 'none');
                 d3.selectAll(".myLeg").attr('opacity', 0.8);
-                d3.select('.stingcard').attr('display', 'none');
-                d3.select('.stingtextgroup')
+                d3.selectAll('.Card').attr('display', 'none');
+                d3.selectAll('.Card').select('g')
                     .interrupt() // Interrupt the current transition
                     .attr('transform', 'translate(0, 0)'); 
             };
@@ -1021,8 +1023,11 @@
                     .y0(d => y(d[0]))
                     .y1(d => y(d[1]))
                 )
-                .attr('opacity', 0.6)
+                .attr('opacity', 0.1)
                 .attr('class', function(d) { return "myArea " + d.key.replace(',', '') + 'Area' });
+            
+            grob.select('.takestingArea')
+                .attr('opacity', 0.5);
 
             var stackedBar = grob
                 .selectAll('bars')
@@ -1041,6 +1046,9 @@
                         .attr('height', d => {return y(d[0])-y(d[1])})
                         .attr('stroke', 'yellow')
                         .attr('stroke-width', 2);
+
+            grob.select('.takestingBar')
+                .style('display', 'block');
 
             var stackedAreaTransparent = grob
                 .selectAll("newlayers")
@@ -1064,7 +1072,7 @@
 
             var legend_expanded = d3.scaleOrdinal()
                 .domain(keys)
-                .range(["● 'Take the sting' out of inflation", "● 'Take the edge off' inflation", "● 'Smash' inflation"]);
+                .range(["● 'Take the sting' out of inflation", "● 'Take the edge off' inflation", "● Fight inflation 'without smashing the economy'"]);
 
             var legend_holder = svg.append('g')
                 .attr('transform', 'translate(0,' + (height + margin.top + margin.bottom) + ')')
@@ -1078,11 +1086,14 @@
                     .attr('y', (d, i) => (25) * (i))
                     .attr('x', 20)
                     .attr('text-anchor', 'left')
-                    .attr('opacity', 0.8)
+                    .attr('opacity', 0.1)
                     .text((d, i) => legend_expanded(keys[i]))
                     .attr('class', function(d){ return 'myLeg ' + d.replace(',', '') + 'Leg' })
                     .style("fill", (d, i) => color(keys[i]))
                     .style('font-size', '1em');
+            
+            legend_holder.select('.takestingLeg')
+                .attr('opacity', 1)
 
             var xAxis = grob.append("g")
                 .attr("transform", "translate(0," + height + ")")
@@ -1096,18 +1107,50 @@
 
             stingcard = grob
                 .append('svg')
-                .attr('class', 'stingcard');
+                .attr('class', 'Card takestingCard')
+                .attr('display', 'block');
 
             stingtextgroup = stingcard.append('g')
-                .attr('class', 'stingtextgroup')
-                    .append('text')
-                        .attr('text-anchor', 'left')
-                        .attr('x', 0)
-                        .attr('y', 0)
-                        .text(
-                            `2022-06-08 // "...try to take the sting out of some of these extraordinarily gas and electricity prices." 2022-07-20 // "... make efforts on the supply side to take some of the sting out of this inflation." 2022-07-20 // "... we’re doing our bit to take some of the sting out of them as well." 2022-07-20 // "... rising interest rates are designed to take some of the sting out of that demand side pressure." 2022-07-28 // "What the independent Reserve Bank is trying to do is to take some of the sting out of inflation by managing demand in the economy." 2022-07-28 // "... they are trying to take some of the sting out of this inflation in a way that doesn’t excessively slow the economy." 2022-07-28 // "... try and take some of the sting out of this inflation challenge in a way that's responsible." 2022-09-08 // "... that will hopefully take some of the sting out of inflation as well."`
-                        )
-                        .call(wrap, 350, 8);
+                .append('text')
+                    .attr('text-anchor', 'left')
+                    .attr('x', 0)
+                    .attr('y', 15)
+                    .text(
+                        `2022-06-08 // "...try to take the sting out of some of these extraordinarily gas and electricity prices." 2022-07-20 // "... make efforts on the supply side to take some of the sting out of this inflation." 2022-07-20 // "... we’re doing our bit to take some of the sting out of them as well." 2022-07-20 // "... rising interest rates are designed to take some of the sting out of that demand side pressure." 2022-07-28 // "What the independent Reserve Bank is trying to do is to take some of the sting out of inflation by managing demand in the economy." 2022-07-28 // "... they are trying to take some of the sting out of this inflation in a way that doesn’t excessively slow the economy." 2022-07-28 // "... try and take some of the sting out of this inflation challenge in a way that's responsible." 2022-09-08 // "... that will hopefully take some of the sting out of inflation as well."`
+                    )
+                    .interrupt()
+                    .transition()
+                    .duration(100000)
+                    .ease(d3.easeLinear)
+                    .attr("transform", "translate(-9000, 0)");
+
+            edgecard = grob
+                .append('svg')
+                .attr('class', 'Card edgtakeCard')
+                .attr('display', 'none');
+
+            edgetextgroup = edgecard.append('g')
+                .append('text')
+                    .attr('text-anchor', 'left')
+                    .attr('x', 0)
+                    .attr('y', 15)
+                    .text(
+                        `2024-11-05 // "... taking some of the edge off these cost‐of‐living pressures." 2024-10-30 // "... the government’s policies are helping take the edge off headline inflation." 2024-10-25 // "... to take some of the edge out of these cost‐of‐living pressures." 2024-09-24 // "... we’ve designed our cost‐of‐living relief to help take some of the edge off these price pressures." 2024-08-29 // "... the government is successfully taking some of the edge off those price pressures." 2024-08-23 // "We are doing everything we responsibly can to take some of the edge off these cost‐of‐living pressures." 2024-08-07 // "So, we’re taking some of the edge off there." 2024-08-06 // "... states are looking for ways to take some of the edge off cost‐of‐living pressures."`
+                    );
+
+            smashcard = grob
+                .append('svg')
+                .attr('class', 'Card smashwithoutCard')
+                .attr('display', 'none');
+
+            smashtextgroup = smashcard.append('g')
+                .append('text')
+                    .attr('text-anchor', 'left')
+                    .attr('x', 0)
+                    .attr('y', 15)
+                    .text(
+                        `2024-09-04 // "... to get on top of inflation without smashing the labour market." 2024-09-03 // "... our objective is to get on top of this inflation challenge, without smashing an economy which is already weak." 2024-09-03 // "... get on top of this inflation challenge in our economy without making life harder for people or smashing an economy which is already weak enough." 2024-09-03 // "... we’re engaged together with the Reserve Bank in this fight against inflation without smashing an economy which is already weak." 2024-08-16 // "... we need to fight that inflation without smashing the economy or smashing the jobs market." 2024-08-16 // "Our job is to get on top of inflation without smashing the economy, and without smashing the jobs market, if we can avoid it."`
+                    );
             
             // Draw and resize
             function drawChart() {
@@ -1127,10 +1170,22 @@
 
                 //
                 stingcard
-                    .attr('x', (width-350)/2)
-                    .attr('y', 0)
-                    .attr('width', 350)
-                    .attr('height', height*1/3);;
+                    .attr('x', 0)
+                    .attr('y', 10)
+                    .attr('width', width)
+                    .attr('height', '1.2em');
+
+                edgecard
+                    .attr('x', 0)
+                    .attr('y', 10)
+                    .attr('width', width)
+                    .attr('height', '1.2em');
+
+                smashcard
+                    .attr('x', 0)
+                    .attr('y', 10)
+                    .attr('width', width)
+                    .attr('height', '1.2em');
 
                 // Update the x values of area
                 stackedArea
