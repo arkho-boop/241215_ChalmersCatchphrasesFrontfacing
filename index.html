@@ -1023,11 +1023,9 @@
                     .y0(d => y(d[0]))
                     .y1(d => y(d[1]))
                 )
-                .attr('opacity', 0.1)
+                .attr('opacity', 0.6)
                 .attr('class', function(d) { return "myArea " + d.key.replace(',', '') + 'Area' });
             
-            grob.select('.takestingArea')
-                .attr('opacity', 0.5);
 
             var stackedBar = grob
                 .selectAll('bars')
@@ -1046,9 +1044,6 @@
                         .attr('height', d => {return y(d[0])-y(d[1])})
                         .attr('stroke', 'yellow')
                         .attr('stroke-width', 2);
-
-            grob.select('.takestingBar')
-                .style('display', 'block');
 
             var stackedAreaTransparent = grob
                 .selectAll("newlayers")
@@ -1086,14 +1081,11 @@
                     .attr('y', (d, i) => (25) * (i))
                     .attr('x', 20)
                     .attr('text-anchor', 'left')
-                    .attr('opacity', 0.1)
+                    .attr('opacity', 0.8)
                     .text((d, i) => legend_expanded(keys[i]))
                     .attr('class', function(d){ return 'myLeg ' + d.replace(',', '') + 'Leg' })
                     .style("fill", (d, i) => color(keys[i]))
                     .style('font-size', '1em');
-            
-            legend_holder.select('.takestingLeg')
-                .attr('opacity', 1)
 
             var xAxis = grob.append("g")
                 .attr("transform", "translate(0," + height + ")")
@@ -1108,7 +1100,7 @@
             stingcard = grob
                 .append('svg')
                 .attr('class', 'Card takestingCard')
-                .attr('display', 'block');
+                .attr('display', 'none');
 
             stingtextgroup = stingcard.append('g')
                 .append('text')
@@ -1117,12 +1109,7 @@
                     .attr('y', 15)
                     .text(
                         `2022-06-08 // "...try to take the sting out of some of these extraordinarily gas and electricity prices." 2022-07-20 // "... make efforts on the supply side to take some of the sting out of this inflation." 2022-07-20 // "... we’re doing our bit to take some of the sting out of them as well." 2022-07-20 // "... rising interest rates are designed to take some of the sting out of that demand side pressure." 2022-07-28 // "What the independent Reserve Bank is trying to do is to take some of the sting out of inflation by managing demand in the economy." 2022-07-28 // "... they are trying to take some of the sting out of this inflation in a way that doesn’t excessively slow the economy." 2022-07-28 // "... try and take some of the sting out of this inflation challenge in a way that's responsible." 2022-09-08 // "... that will hopefully take some of the sting out of inflation as well."`
-                    )
-                    .interrupt()
-                    .transition()
-                    .duration(100000)
-                    .ease(d3.easeLinear)
-                    .attr("transform", "translate(-9000, 0)");
+                    );
 
             edgecard = grob
                 .append('svg')
@@ -1212,9 +1199,28 @@
                     );
             };
 
+            function onLoad() {
+                // reduce opacity of everything else 
+                d3.selectAll(".myArea").attr('opacity', 0.1);
+                // except the one that's hovered
+                d3.select('.takestingArea').attr('opacity', 0.5);
+                d3.selectAll('.takestingBar').style('display', 'block');
+                d3.selectAll(".myLeg").attr('opacity', 0.1);
+                d3.select('.takestingLeg').attr('opacity', 1);
+                d3.selectAll('.Card').attr('display', 'none');
+                d3.select('.takestingCard').attr('display', 'block');
+                d3.select('.takestingCard').select('g')
+                    .interrupt()
+                    .transition()
+                    .duration(100000)
+                    .ease(d3.easeLinear)
+                    .attr("transform", "translate(-9000, 0)");
+            }
+
             drawChart();
 
             window.addEventListener('resize', drawChart );
+            window.addEventListener('load', onLoad)
     </script>
     </body>
 </html>
