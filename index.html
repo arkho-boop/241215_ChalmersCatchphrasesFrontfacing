@@ -1132,25 +1132,36 @@
 
                 withoutsmashingleg1 = legend_holder
                     .append('text')
-                        .attr('y', 28)
+                        .attr('y', 18)
                         .attr('text-anchor', 'middle')
                         .style('font-size', '0.8em');
 
                 withoutsmashingleg1.append('tspan')
                     .style("fill", 'white')
                     .style('font-weight', 500)
-                    .text("Fight inflation 'without")
+                    .text("Fight inflation")
 
                 withoutsmashingleg2 = legend_holder
                     .append('text')
-                        .attr('y', 48)
+                        .attr('y', 38)
                         .attr('text-anchor', 'middle')
                         .style('font-size', '0.8em')
                 
                 withoutsmashingleg2.append('tspan')
                     .style("fill", 'white')
                     .style('font-weight', 500)
-                    .text("smashing the economy'")
+                    .text("'without smashing")
+
+                withoutsmashingleg3 = legend_holder
+                    .append('text')
+                        .attr('y', 58)
+                        .attr('text-anchor', 'middle')
+                        .style('font-size', '0.8em')
+                
+                withoutsmashingleg3.append('tspan')
+                    .style("fill", 'white')
+                    .style('font-weight', 500)
+                    .text("the economy'")
 
                 var xAxis = grob.append("g")
                     .attr("transform", "translate(0," + height + ")")
@@ -1232,6 +1243,7 @@
 
                     withoutsmashingleg1.attr('x', margin.left + ((width/3) - 10)/2 + 2 * ((width/3) + 5))
                     withoutsmashingleg2.attr('x', margin.left + ((width/3) - 10)/2 + 2 * ((width/3) + 5))
+                    withoutsmashingleg3.attr('x', margin.left + ((width/3) - 10)/2 + 2 * ((width/3) + 5))
 
                     //
                     stingcard
