@@ -13,18 +13,18 @@
         </style>
     </head>
     <body>
-        <div style="max-width: 700px; display: inline-block;"></div>
+        <div style="max-width: 700px;"></div>
             <span style="max-width: 700px; display: inline-block; text-align: center;">
                 <p style="font-size: 2.5em; font-weight:700">Chalmers: what's the government doing on inflation?</p>
                 <br>
-                <p style="font-size: 1.13em;">A rolling average of the share of economics-related paragraphs Jim Chalmers has said in which the catchphrase appears.</p>
+                <p style="font-size: 1.13em;">A rolling average of the share of economics-related paragraphs Jim Chalmers has said in which a variation of the catchphrase appears.</p>
             </span>
             <div id="viz" style="max-width: 700px;">
             </div>
             <script>
                 const margin = { top: 0, right: 30, bottom: 60, left: 30 };
                 const legend_box_dimensions = { height: 70 };
-                const height = 450 - margin.top - margin.bottom - legend_box_dimensions.height;
+                const height = 400 - margin.top - margin.bottom - legend_box_dimensions.height;
 
                 var svg = d3.select("#viz")
                     .append("svg")
@@ -1079,11 +1079,12 @@
                     .enter()
                     .append('rect')
                         .attr('y', 0)
+                        .attr('key', (d) => d)
                         .attr('height', legend_box_dimensions.height)
                         .attr('fill', (d, i) => color(keys[i]))
                         .attr('rx', 5)
                         .attr('ry', 5)
-                        .attr('class', function(d){ return 'myLeg ' + d.replace(',', '') + 'Leg' })
+                        .attr('class', function(d){ return 'myLeg ' + d.replace(',', '') + 'Leg' });
 
                 takestingleg1 = legend_holder
                     .append('text')
