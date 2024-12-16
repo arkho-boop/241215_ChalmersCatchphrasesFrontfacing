@@ -10,6 +10,12 @@
                 overflow: hidden;
                 font-family: "Times New Roman", Times, serif;
             };
+            normalquote {
+                font-weight: 400
+            };
+            boldquote {
+                font-weight: 800
+            };
         </style>
     </head>
     <body>
@@ -1183,9 +1189,89 @@
                         .attr('text-anchor', 'left')
                         .attr('x', 0)
                         .attr('y', 15)
-                        .text(
-                            `2022-06-08 // "...try to take the sting out of some of these extraordinarily gas and electricity prices." 2022-07-20 // "... make efforts on the supply side to take some of the sting out of this inflation." 2022-07-20 // "... we’re doing our bit to take some of the sting out of them as well." 2022-07-20 // "... rising interest rates are designed to take some of the sting out of that demand side pressure." 2022-07-28 // "What the independent Reserve Bank is trying to do is to take some of the sting out of inflation by managing demand in the economy." 2022-07-28 // "... they are trying to take some of the sting out of this inflation in a way that doesn’t excessively slow the economy." 2022-07-28 // "... try and take some of the sting out of this inflation challenge in a way that's responsible." 2022-09-08 // "... that will hopefully take some of the sting out of inflation as well."`
-                        );
+                
+                stingtextgroup.append('tspan')
+                    .attr('class', 'normalquote')
+                    .text(`2022-06-08: "...try to `)
+
+                stingtextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`take the sting out `)
+
+                stingtextgroup.append('tspan')
+                    .attr('class', 'normalquote')
+                    .text(`of some of these extraordinarily gas and electricity prices." 2022-07-20: "... make efforts on the supply side to `)
+
+                stingtextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`take some of the sting out `)
+
+                stingtextgroup.append('tspan')
+                    .attr('class', 'normalquote')
+                    .text(`of this inflation." 2022-07-20: "... we’re doing our bit `)
+
+                stingtextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`to take some of the sting out `)
+
+                stingtextgroup.append('tspan')
+                    .text(`of them as well." 2022-07-20: "... rising interest rates are designed `)
+
+                stingtextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`to take some of the sting out `)
+
+                stingtextgroup.append('tspan')
+                    .text(`of that demand side pressure." 2022-07-28: "What the independent Reserve Bank is trying to do is `)
+
+                stingtextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`to take some of the sting out `)
+
+                stingtextgroup.append('tspan')
+                    .text(`of this inflation in a way that doesn’t excessively slow the economy." 2022-07-28: "... `)
+
+                stingtextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`try and take some of the sting out `)
+
+                stingtextgroup.append('tspan')
+                    .text(`of this inflation challenge in a way that's responsible." 2022-09-08: "... that will hopefully `)
+
+                stingtextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`take some of the sting out `)
+
+                stingtextgroup.append('tspan')
+                    .text(`of inflation as well." 2022-10-26: "... regulatory changes that we can make  `)
+
+                stingtextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`take some of the sting out `)
+
+                stingtextgroup.append('tspan')
+                    .text(`of these price rises." 2022-10-26: "... "if we can do that `)
+
+                stingtextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`to help take some of the sting out `)
+
+                stingtextgroup.append('tspan')
+                    .text(`of these price rises, then obviously we’ll consider it." 2022-10-26: "... we can do something in the market `)
+
+                stingtextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`to take some of the sting out `)
+
+                stingtextgroup.append('tspan')
+                    .text(`of these higher electricity prices." 2022-10-26: "... that we could do in energy markets `)
+
+                stingtextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`to try and take the sting out `)
+
+                stingtextgroup.append('tspan')
+                    .text(`of some of these price rises." `)
 
                 edgecard = grob
                     .append('svg')
@@ -1196,10 +1282,73 @@
                     .append('text')
                         .attr('text-anchor', 'left')
                         .attr('x', 0)
-                        .attr('y', 15)
-                        .text(
-                            `2024-11-05 // "... taking some of the edge off these cost‐of‐living pressures." 2024-10-30 // "... the government’s policies are helping take the edge off headline inflation." 2024-10-25 // "... to take some of the edge out of these cost‐of‐living pressures." 2024-09-24 // "... we’ve designed our cost‐of‐living relief to help take some of the edge off these price pressures." 2024-08-29 // "... the government is successfully taking some of the edge off those price pressures." 2024-08-23 // "We are doing everything we responsibly can to take some of the edge off these cost‐of‐living pressures." 2024-08-07 // "So, we’re taking some of the edge off there." 2024-08-06 // "... states are looking for ways to take some of the edge off cost‐of‐living pressures."`
-                        );
+                        .attr('y', 15);
+
+                edgetextgroup.append('tspan')
+                    .text(`2022-06-08: "... `)
+
+                edgetextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`take some of the edge off `)
+
+                edgetextgroup.append('tspan')
+                    .text(`this strong demand," 2022-12-07: "... working on a plan `)
+
+                edgetextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`to try and take the edge off `)
+
+                edgetextgroup.append('tspan')
+                    .text(`some of these energy price rises," 2022-12-08: "What we are trying to do here is `)
+                
+                edgetextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`to take the edge off `)
+
+                edgetextgroup.append('tspan')
+                    .text(`those price rises," 2022-12-12: "... we will `)
+
+                edgetextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`take the edge off `)
+
+                edgetextgroup.append('tspan')
+                    .text(`these energy price rises," 2022-12-12: "... we're acting in the near term with a degree of urgency `)
+
+                edgetextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`to take the edge off `)
+
+                edgetextgroup.append('tspan')
+                    .text(`these energy price rises." 2022-12-15: "... what we're doing today in the Parliament, is `)
+
+                edgetextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`to try and take some of the edge off `)
+
+                edgetextgroup.append('tspan')
+                    .text(`that." 2023-01-16: "... in a way that `)
+
+                edgetextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`takes some of the edge off `)
+
+                edgetextgroup.append('tspan')
+                    .text(`these forecast price increases." 2023-01-17: "... we think that will `)
+
+                edgetextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`take the edge off `)
+
+                edgetextgroup.append('tspan')
+                    .text(`some of these forecast price rises," 2023-01-17: "... intervention in the market `)
+
+                edgetextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`to try and take some of the edge off `)
+
+                edgetextgroup.append('tspan')
+                    .text(`these forecast price rises,"`)
 
                 smashcard = grob
                     .append('svg')
@@ -1210,10 +1359,42 @@
                     .append('text')
                         .attr('text-anchor', 'left')
                         .attr('x', 0)
-                        .attr('y', 15)
-                        .text(
-                            `2024-09-04 // "... to get on top of inflation without smashing the labour market." 2024-09-03 // "... our objective is to get on top of this inflation challenge, without smashing an economy which is already weak." 2024-09-03 // "... get on top of this inflation challenge in our economy without making life harder for people or smashing an economy which is already weak enough." 2024-09-03 // "... we’re engaged together with the Reserve Bank in this fight against inflation without smashing an economy which is already weak." 2024-08-16 // "... we need to fight that inflation without smashing the economy or smashing the jobs market." 2024-08-16 // "Our job is to get on top of inflation without smashing the economy, and without smashing the jobs market, if we can avoid it."`
-                        );
+                        .attr('y', 15);
+
+                smashtextgroup.append('tspan')
+                    .text(`2024-05-10: "It will fight inflation `)
+
+                smashtextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`without smashing the economy`)
+
+                smashtextgroup.append('tspan')
+                    .text(`." 2024-05-12: "... we can do that `)
+
+                smashtextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`without smashing the economy `)
+
+                smashtextgroup.append('tspan')
+                    .text(`at the same time." 2024-05-14: "... we can engage meaningfully in the fight against inflation `)
+
+                smashtextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`without smashing the economy`)
+
+                smashtextgroup.append('tspan')
+                    .text(`." 2024-05-14: "We’ve been able to do that `)
+
+                smashtextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`without smashing the economy`)
+
+                smashtextgroup.append('tspan')
+                    .text(`," 2024-05-14: "... get on top of this inflation challenge `)
+
+                smashtextgroup.append('tspan')
+                    .style('font-weight', 800)
+                    .text(`without smashing people and without smashing the budget or the economy." `)
                 
                 // Draw and resize
                 function drawChart() {
